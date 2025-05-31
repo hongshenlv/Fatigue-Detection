@@ -18,7 +18,7 @@
 本项目通过以下思路实现“疲劳监测与告警”：
 
 
-1. **改造自 [Anukriti2512/Eye-Strain-Detection](https://github.com/Anukriti2512/Eye-Strain-Detection)**  
+1. **改造自 [Anukriti2512/Eye-Strain-Detection](https://github.com/Anukriti2512/Eye-Strain-Detection)为我们提供了很好的基础。**  
    - 原项目在 macOS 下基于 OpenCV + dlib （68 点人脸关键点）进行眨眼检测，使用 EAR（Eye Aspect Ratio）阈值判断闭眼。  
    - 我们将其改造为 **两个独立的 YOLOv8 分类模型**：  
      - **眨眼分类模型**（Open Eye vs Close Eye）  
@@ -146,6 +146,88 @@ pip install -r requirements.txt
 
 ### 4. 准备数据集
 
+#### 4.1 眨眼分类数据集（Eyes Dataset）
+
+1. 在[Kaggle Eyes Dataset](https://www.kaggle.com/datasets/charunisa/eyes-dataset)下载数据
+
+2. 将数据解压并按以下结构组织：
+```bash
+dataset_blink/
+├── train/
+│   ├── open eye/
+│   └── close eye/
+└── val/
+    ├── open eye/
+    └── close eye/
+```
+
+3. 确保项目根目录下存在 dataset_blink.yaml，并内容正确。例如：
+```bash
+path: ./dataset_blink
+train: train
+val: val
+nc: 2
+names:
+  0: open eye
+  1: close eye
+```
+
+#### 4.2 打哈欠分类数据集（Yawning Dataset）
+
+1. 在[Kaggle Yawning Dataset](https://www.kaggle.com/datasets/deepankarvarma/yawning-dataset-classification)下载数据
+
+2. 将数据解压并按以下结构组织（需手动划分训练/验证子集）：
+```bash
+dataset_yawn/
+├── train/
+│   ├── no_yawn/
+│   └── yawn/
+└── val/
+    ├── no_yawn/
+    └── yawn/
+```
+
+3. 确保项目根目录下存在 dataset_blink.yaml，并内容正确。例如：
+```bash
+path: ./dataset_yawn
+train: train
+val: val
+nc: 2
+names:
+  0: no_yawn
+  1: yawn
+```
+
+### 5. 训练模型
+
+请分别运行：
+```bash
+# 训练眨眼分类模型
+python3 train_blink.py
+
+# 训练打哈欠分类模型
+python3 train_yawn.py
+```
+
+### 6. 运行疲劳监测
+
+```bash
+python3 webstreaming.py
+```
+
+- 打开浏览器访问 http://127.0.0.1:5000/，即可看到实时摄像头画面及叠加的：
+
+   - 累计眨眼次数
+
+   - 累计打哈欠次数
+
+   - 当前“Eye: Open/Closed”
+
+   - 当前“Mouth: Yawning/No Yawn”
+
+   - 疲劳状态文本：WARNING: FATIGUE 或 STATUS: NORMAL
+
+- macOS 下，当检测到疲劳条件时，会弹出系统通知并播放声音；在界面上同时会显示 “WARNING: FATIGUE”。
 
 ```bash
 # Clone this repository
@@ -167,39 +249,27 @@ $ python webstreaming.py
 # Copy the IP Address on a web browser and use the application to see blink detection in real-time
 ```
 
+## 未来改进与扩展
 
-## Approach
+1. **更丰富的疲劳指标**
 
-The blink detector computes a metric called the eye aspect ratio (EAR), introduced by Soukupová and Čech in their 2016 paper, Real-Time Eye Blink Detection Using Facial Landmarks[1]. The eye aspect ratio makes for an elegant algorithm that involves a very simple calculation based on the ratio of distances between facial landmarks of the eyes. 
+   除了眨眼次数和打哈欠次数，可结合头部姿态（nod）、瞳孔跳动等信息进行多模态融合。
 
-Each eye is represented by 6 (x, y)-coordinates, starting at the left-corner of the eye, and then working clockwise around the remainder of the region:
+2. **跨平台通知方案**
 
-![blink_detection_6_landmarks](https://user-images.githubusercontent.com/37685052/91079233-6ccfdf00-e661-11ea-8804-25269701d328.jpg) 
+   当前仅支持 macOS 通知，后续会考虑添加 Windows 或 Linux 版本。
 
-Based on this image, we can see find a relation between the width and the height of these coordinates. We can then derive an equation that reflects this relation called the eye aspect ratio (EAR): 
+3. **优化嘴部 ROI 定位**
 
-![blink_detection_equation](https://user-images.githubusercontent.com/37685052/91079328-8a04ad80-e661-11ea-90b7-01d89fad71d2.png)
+   目前示例使用 FaceMesh 的固定点，可根据实际数据集标注方式调整更准确的嘴部区域。
 
-The eye aspect ratio is approximately constant while the eye is open, but will rapidly fall to zero when a blink is taking place. Using this simple equation, we can avoid image processing techniques and simply rely on the ratio of eye landmark distances to determine if a person is blinking. A frame threshold range is used to ensure that the person actually blinked and that their eyes are not closed for a long time.
+4. **前端可视化增强**
 
-![blink_detection_plot](https://user-images.githubusercontent.com/37685052/91079315-87a25380-e661-11ea-9f03-9c32bee8f9cc.jpg)
+   增加绘制 60 秒滑动窗口内眨眼/打哈欠次数曲线，帮助用户直观了解疲劳趋势。
 
-In this project, I have used existing Deep Learning models that detect faces and facial landmarks from images/video streams. These return the coordinates of the facial features like left eye, right eye, nose, etc. which have been used to calculate EAR. Blinking rate is monitored per minute.
+5. **模型轻量化与量化**
 
-
-## Demo 
-
-You can view a demo of this project here : https://youtu.be/Tt2DR8FvYDk
-
-## Scope for improvement & future plans
-
-1. Currenly, EAR is the only quantitative metric used to determine if a person has blinked. However, due to noise in a video stream, subpar facial landmark detections, or fast changes in viewing angle, it could produce a false-positive detection, reporting that a blink had taken place when in reality the person had not blinked. To improve the blink detector, Soukupová and Čech recommend constructing a 13-dim feature vector of eye aspect ratios (N-th frame, N – 6 frames, and N + 6 frames), followed by feeding this feature vector into a Linear SVM for classification.
-
-2. The UI is still being improved, and the web-app will be deployed soon.
-
-3. Currently, this only works for MacOS due to some library limilations. It will be made cross platform soon.
-
-4. Visualizations will be added so users can see insights about their blinking habits.
+   将 YOLOv8 分类模型裁剪或量化部署到手机/嵌入式设备，实现移动端实时疲劳监测。
 
 
 ### References
