@@ -67,7 +67,7 @@
 
 ![正常情况](screenshots/normal.png)
 
-图中可看到：Blink 计数较少，Eye 显示为 “Open”，Mouth 显示为 “No Yawn”，状态为 “STATUS: NORMAL”。*
+图中显示正常情况下，状态为 “STATUS: NORMAL”。*
 
 ---
 
@@ -75,7 +75,7 @@
 
 ![打哈欠情况](screenshots/yawn.png)
 
-图中可看到：检测到嘴部“Yawning”，Yawns 计数增加，Eye 依然为 “Open”，状态仍为 “STATUS: NORMAL”。*
+图中显示：检测到嘴部“Yawning”，Yawns 计数增加，由于没达到阈值，状态仍为 “STATUS: NORMAL”。*
 
 ---
 
