@@ -18,7 +18,7 @@
 本项目通过以下思路实现“疲劳监测与告警”：
 
 
-1. **改造自 [Anukriti2512/Eye-Strain-Detection](https://github.com/Anukriti2512/Eye-Strain-Detection)为我们提供了很好的基础。**  
+1. **[Anukriti2512/Eye-Strain-Detection](https://github.com/Anukriti2512/Eye-Strain-Detection)为我们提供了很好的基础。**  
    - 原项目在 macOS 下基于 OpenCV + dlib （68 点人脸关键点）进行眨眼检测，使用 EAR（Eye Aspect Ratio）阈值判断闭眼。  
    - 我们将其改造为 **两个独立的 YOLOv8 分类模型**：  
      - **眨眼分类模型**（Open Eye vs Close Eye）  
