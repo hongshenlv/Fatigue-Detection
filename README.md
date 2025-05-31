@@ -3,11 +3,10 @@
 ## 项目背景 
 
 现如今学生和上班族每天面对电脑的时间越来越长，容易产生眼睛干涩、视疲劳，甚至长期伏案可能导致注意力下降、工作效率降低。在驾驶、操作机械等高风险场景下，疲劳更会带来严重的安全隐患。
-为何选择眨眼和打哈欠作为疲劳监测信号？
+**为何选择眨眼和打哈欠作为疲劳监测信号？**
 
-  眨眼频率过低：人在高度集中用眼时眨眼次数会大幅减少，导致泪液分布不足，眼睛容易干涩发痒，久而久之出现视疲劳。
-
-  打哈欠频率过高：频繁打哈欠往往与大脑缺氧、警觉性下降相关，也是在身体疲倦时的一种生理表现。
+- **眨眼频率过低**：人在高度集中用眼时眨眼次数会大幅减少，导致泪液分布不足，眼睛容易干涩发痒，久而久之出现视疲劳。  
+- **打哈欠频率过高**：频繁打哈欠往往与大脑缺氧、警觉性下降相关，也是在身体疲倦时的一种生理表现。  
 
 因此，通过我们电脑的摄像头实时检测用户的眨眼和打哈欠行为，在一定时间窗口内结合阈值进行判断，就能及时检测并提醒用户休息。
 
@@ -16,53 +15,34 @@
 
 本项目通过以下思路实现“疲劳监测与告警”：
 
-1.改造自 Anukriti2512/Eye-Strain-Detection
 
-  原项目在 macOS 下基于 OpenCV + dlib（68 点人脸关键点）进行眨眼检测，使用 EAR（Eye Aspect Ratio）阈值判断闭眼，给我们提供了非常好的基础。
-  
-  我们将其改造为 两个独立的 YOLOv8 分类模型：
-  
-    ·眨眼分类模型（Open Eye vs Close Eye）
-    
-    ·打哈欠分类模型（No Yawn vs Yawn）
+1. **改造自 [Anukriti2512/Eye-Strain-Detection](https://github.com/Anukriti2512/Eye-Strain-Detection)**  
+   - 原项目在 macOS 下基于 OpenCV + dlib （68 点人脸关键点）进行眨眼检测，使用 EAR（Eye Aspect Ratio）阈值判断闭眼。  
+   - 我们将其改造为 **两个独立的 YOLOv8 分类模型**：  
+     - **眨眼分类模型**（Open Eye vs Close Eye）  
+     - **打哈欠分类模型**（No Yawn vs Yawn）  
 
-2.为什么使用 YOLOv8 分类
+2. **为什么使用 YOLOv8 分类**  
+   - 仅需为训练数据标注“开眼/闭眼”或“打哈欠/未打哈欠”分类标签，无需在每张图片上画检测框；  
+   - 基于 YOLOv8 预训练权重，只需微调分类头，训练速度快、效率高；  
+   - 对多样化人脸、光照、佩戴眼镜等情况具有更好泛化能力。
 
-  ·仅需为训练数据标注“开眼/闭眼”或“打哈欠/未打哈欠”分类标签，无需在每张图片上画检测框；
-  
-  ·基于 YOLOv8 预训练权重，只需微调分类头，训练速度快、效率高；
-  
-  ·对多样化人脸、光照、佩戴眼镜等情况具有更好泛化能力。
+3. **实时疲劳判断逻辑**  
+   - 通过 MediaPipe FaceMesh 先定位左右眼和嘴部 ROI，分别送入两个已训练好的 YOLOv8 分类模型进行推理，得到“左右眼开/闭”和“嘴部是否在打哈欠”的信息；  
+   - 统计 **每 60 秒**（以眨眼判定时长为基准）窗口内的眨眼次数 `window_blinks` 和打哈欠次数 `window_yawns`；  
+   - 如果 `window_blinks < BLINK_ALERT_THRESHOLD（默认 12 次）` **或** `window_yawns > YAWN_ALERT_THRESHOLD（默认 3 次）`，立即判定为疲劳：  
+     1. 发送系统通知（弹窗 + 声音）  
+     2. 在画面上显示 “WARNING: FATIGUE”  
+     3. 立即将 `window_blinks = 0`、`window_yawns = 0` 并重置窗口计时，进入下一轮监测  
+   - 否则保持 “STATUS: NORMAL”，等待 60 秒后再次根据窗口值判定是否疲劳。  
 
-3.实时疲劳判断逻辑
-
-  通过 MediaPipe FaceMesh 先定位左右眼和嘴部 ROI，分别送入两个已训练好的 YOLOv8 分类模型进行推理，得到“左右眼开/闭”和“嘴部是否在打哈欠”的信息；
-  
-  统计 每 60 秒（以眨眼判定时长为基准）窗口内的眨眼次数 window_blinks 和打哈欠次数 window_yawns；
-  
-  如果 window_blinks < BLINK_ALERT_THRESHOLD（默认 12 次） 或 window_yawns > YAWN_ALERT_THRESHOLD（默认 3 次），立即判定为疲劳：
-  
-    1).发送系统通知（弹窗 + 声音）
-    
-    2).在画面上显示 “WARNING: FATIGUE”
-    
-    3).立即将 window_blinks=0、window_yawns=0 并重置窗口计时，进入下一轮监测
-    
-  否则保持 “STATUS: NORMAL”，等待 60 秒后再次根据窗口值判定是否疲劳。
-
-4.告警与提示
-
-  我们在前端视频帧上实时叠加：
-  
-    ·累计眨眼次数 Blinks
-    
-    ·累计打哈欠次数 Yawns
-    
-    ·实时“Eye: Open/Closed” 和 “Mouth: Yawning/No Yawn”
-    
-    ·疲劳状态文本：WARNING: FATIGUE 或 STATUS: NORMAL
-    
-  使用 macOS 通知（pync 调用 Notification Center）在疲劳判定时弹窗告警，并发出声音提醒。
+4. **告警与提示**  
+   - 前端视频帧上实时叠加：  
+     - 累计眨眼次数 `Blinks`  
+     - 累计打哈欠次数 `Yawns`  
+     - 实时“Eye: Open/Closed” 和 “Mouth: Yawning/No Yawn”  
+     - 疲劳状态文本：`WARNING: FATIGUE` 或 `STATUS: NORMAL`  
+   - 使用 macOS 通知（`pync` 调用 Notification Center）在疲劳判定时弹窗告警，并发出声音提醒。
 
 ## 关键特性
 双模型分类：分别用 YOLOv8 模型训练“开/闭眼”和“打哈欠/未打哈欠”分类头
@@ -77,6 +57,7 @@
 
 ## 项目结构
 
+```bash
 Eye-Strain-Detection/
 ├── Blink_detection/                   
 │   ├── best.pt                       # 眨眼分类模型权重（Open/Close Eye）
@@ -99,7 +80,7 @@ Eye-Strain-Detection/
 │       └── templatemo-style.css
 └── templates/                        
     └── index.html                    # 实时视频流 + 介绍文字的前端模板
-
+```
 
 ## 核心文件
 Blink_detection/blink_detection.py
