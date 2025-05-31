@@ -261,23 +261,24 @@ python3 webstreaming.py
 - macOS 下，当检测到疲劳条件时，会弹出系统通知并播放声音；在界面上同时会显示 “WARNING: FATIGUE”。
 
 ```bash
-# Clone this repository
+# 克隆此仓库
 $ git clone https://github.com/Anukriti2512/Eye-Strain-Detection.git
 
-# Go into the repository
+# 进入仓库目录
 $ cd Eye-Strain-Detection
 
-# Create a virtual/conda environment and activate it: 
+# 创建一个 conda（或虚拟）环境并激活它：
 $ conda create --name myenv
 $ conda activate myenv
 
-# Install dependencies
+# 安装依赖
 $ pip install -r requirements.txt
 
-# Run the app
+# 运行应用
 $ python webstreaming.py
 
-# Copy the IP Address on a web browser and use the application to see blink detection in real-time
+# 在浏览器中输入返回的 IP 地址，以实时查看眨眼检测效果
+
 ```
 
 ## 未来改进与扩展
