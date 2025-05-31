@@ -103,7 +103,7 @@ Eye-Strain-Detection/
 ├── train_yawn.py                     # 训练打哈欠分类模型脚本
 ├── webstreaming.py                   # Flask 后端：实时调用分类函数，叠加信息并推视频流
 ├── Notifier.py                       # macOS 通知模块：疲劳告警弹窗 + 声音
-├── shape_predictor_68_face_landmarks.dat  # （原项目依赖，可选）dlib 关键点模型
+├── shape_predictor_68_face_landmarks.dat  # （可选）dlib 关键点模型
 ├── requirements.txt                  # Python 依赖列表
 ├── Procfile                          # 部署示例（Heroku 等，可选）
 ├── README.md                         # 项目说明文档（当前文件）
@@ -284,7 +284,7 @@ $ python webstreaming.py
 
 1. **更丰富的疲劳指标**
 
-   除了眨眼次数和打哈欠次数，可结合头部姿态（nod）、瞳孔跳动等信息进行多模态融合。
+   除了眨眼次数和打哈欠次数，可结合头部姿态、瞳孔跳动等信息进行多模态融合。
 
 2. **跨平台通知方案**
 
