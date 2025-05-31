@@ -82,7 +82,7 @@
 
 ### 3. 疲劳告警（WARNING: FATIGUE）
 
-![告警情况](screenshots/warning.png)
+![告警情况](screenshots/warning1.png)
 
 当当前 60 秒窗口内 `window_blinks < BLINK_ALERT_THRESHOLD` 或 `window_yawns > YAWN_ALERT_THRESHOLD` 时，页面会闪烁并显示 “WARNING: FATIGUE”，同时触发系统通知（如图中右上角 macOS 通知示例）。*
 
