@@ -57,6 +57,36 @@
 
 跨平台扩展：原生支持 macOS 通知，用户可根据需求替换为 Windows/Linux 通知方案
 
+## 示例效果
+
+以下截图分别展示了系统在「正常状态」、「打哈欠状态」和「出现疲劳警告」时，网页端的实时检测画面。
+
+---
+
+### 1. 正常状态（STATUS: NORMAL）
+
+![正常情况](screenshots/normal.png)
+
+图中可看到：Blink 计数较少，Eye 显示为 “Open”，Mouth 显示为 “No Yawn”，状态为 “STATUS: NORMAL”。*
+
+---
+
+### 2. 打哈欠状态（Mouth: Yawning）
+
+![打哈欠情况](screenshots/yawn.png)
+
+图中可看到：检测到嘴部“Yawning”，Yawns 计数增加，Eye 依然为 “Open”，状态仍为 “STATUS: NORMAL”。*
+
+---
+
+### 3. 疲劳告警（WARNING: FATIGUE）
+
+![告警情况](screenshots/warning.png)
+
+当当前 60 秒窗口内 `window_blinks < BLINK_ALERT_THRESHOLD` 或 `window_yawns > YAWN_ALERT_THRESHOLD` 时，页面会闪烁并显示 “WARNING: FATIGUE”，同时触发系统通知（如图中右上角 macOS 通知示例）。*
+
+
+
 ## 项目结构
 
 ```bash
