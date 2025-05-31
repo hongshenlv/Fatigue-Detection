@@ -267,7 +267,7 @@ $ git clone https://github.com/Anukriti2512/Eye-Strain-Detection.git
 # 进入仓库目录
 $ cd Eye-Strain-Detection
 
-# 创建一个 conda（或虚拟）环境并激活它：
+# 创建一个虚拟环境并激活它：
 $ conda create --name myenv
 $ conda activate myenv
 
