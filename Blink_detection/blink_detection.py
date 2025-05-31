@@ -132,10 +132,8 @@ def classify_eyes(frame: np.ndarray, conf_thres: float = 0.3):
 
 # 这里我们简单地把「嘴部」当作 ROI，借助 FaceMesh 的部分嘴部关键点（例如 [13,14, 78,308] 只是示例），
 # 然后把嘴部 ROI 提取出来，用 yawn_model 给出「打哈欠／不打哈欠」的概率。
-# 注意：如果你当初训练打哈欠模型的数据就是「裁好嘴部区域的图像」，那么也可以直接用整张图 inference。
-# 这里给出一个基于 MediaPipe 裁口型区域的示例做法（可根据你训练时的具体标注方式做微调）。
+# 这里给出一个基于 MediaPipe 裁口型区域的示例做法（可根据训练时的具体标注方式做微调）。
 
-# 以下几个点仅作示例，你可根据训练数据时对嘴部 ROI 的定义，将 `MOUTH_IDXS` 调整为对应的 FaceMesh 索引。
 MOUTH_IDXS = [61, 291, 0, 17]  # 示例：左嘴角、右嘴角、下巴顶点、上嘴唇顶点
 
 def classify_yawn(frame: np.ndarray, conf_thres: float = 0.3):
