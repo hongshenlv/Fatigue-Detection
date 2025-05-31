@@ -274,8 +274,10 @@ $ python webstreaming.py
 
 ### References
 
-1. [Research Paper: Real-Time Eye Blink Detection Using Facial Landmarks](http://vision.fe.uni-lj.si/cvww2016/proceedings/papers/05.pdf)
-2. [Facial and Landmark Recognition Models](http://dlib.net/)
-3. [Creating web-application using Flask](https://towardsdatascience.com/designing-a-machine-learning-model-and-deploying-it-using-flask-on-heroku-9558ce6bde7b)
-4. [HTML+CSS](https://templatemo.com/tag/video)
-5. [Eye Health knowledge](https://visionsource.com/blog/are-you-blinking-enough/)
+1. [Eye-Strain-Detection](https://github.com/Anukriti2512/Eye-Strain-Detection)
+2. [Research Paper: Real-Time Eye Blink Detection Using Facial Landmarks](http://vision.fe.uni-lj.si/cvww2016/proceedings/papers/05.pdf)
+3. [real-time-drowsy-driving-detection](https://github.com/tyrerodr/real-time-drowsy-driving-detection)
+4. [Facial and Landmark Recognition Models](http://dlib.net/)
+5. [Creating web-application using Flask](https://towardsdatascience.com/designing-a-machine-learning-model-and-deploying-it-using-flask-on-heroku-9558ce6bde7b)
+6. [HTML+CSS](https://templatemo.com/tag/video)
+7. [Eye Health knowledge](https://visionsource.com/blog/are-you-blinking-enough/)
