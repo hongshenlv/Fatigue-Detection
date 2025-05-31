@@ -78,48 +78,28 @@
 ## 项目结构
 
 Eye-Strain-Detection/
-
-├── Blink_detection/           
-
+├── Blink_detection/                   
 │   ├── best.pt                       # 眨眼分类模型权重（Open/Close Eye）
-
 │   ├── best_yawn.pt                  # 打哈欠分类模型权重（No Yawn/Yawn）
-
 │   └── blink_detection.py            # 核心推理函数：classify_eyes() + classify_yawn()
-
 │
-
 ├── dataset_blink.yaml                # 眨眼分类数据集配置
-
 ├── dataset_yawn.yaml                 # 打哈欠分类数据集配置
-
 ├── train_blink.py                    # 训练眨眼分类模型脚本
-
 ├── train_yawn.py                     # 训练打哈欠分类模型脚本
-
 ├── webstreaming.py                   # Flask 后端：实时调用分类函数，叠加信息并推视频流
-
 ├── Notifier.py                       # macOS 通知模块：疲劳告警弹窗 + 声音
-
 ├── shape_predictor_68_face_landmarks.dat  # （原项目依赖，可选）dlib 关键点模型
-
 ├── requirements.txt                  # Python 依赖列表
-
 ├── Procfile                          # 部署示例（Heroku 等，可选）
-
 ├── README.md                         # 项目说明文档（当前文件）
-
 ├── static/                           # 前端静态资源（CSS）
-
 │   └── css/
-
 │       ├── bootstrap.min.css
-
 │       └── templatemo-style.css
-
 └── templates/                        
-
     └── index.html                    # 实时视频流 + 介绍文字的前端模板
+
 
 ## 核心文件
 Blink_detection/blink_detection.py
