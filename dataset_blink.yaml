@@ -1,0 +1,9 @@
+path: ./dataset
+train: train
+val: val
+
+nc: 2
+
+names:
+  0: no_yawn
+  1: yawn

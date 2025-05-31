@@ -1,0 +1,8 @@
+path: ./dataset
+
+train: train
+val:   val
+nc: 2
+names:
+  0: open eye
+  1: close eye

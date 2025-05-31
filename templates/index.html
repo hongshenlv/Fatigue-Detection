@@ -1,72 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Blink Detection</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>疲劳监测</title>
 
     <!-- load CSS -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"
+    />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/templatemo-style.css') }}">
-
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/templatemo-style.css') }}"
+    />
   </head>
+
   <body>
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12" align="center">
-                <header class="tm-site-header">
-                    <h1 class="pl-4 tm-site-title">ARE YOU BLINKING ENOUGH?</h1>
-                </header>
-            </div>
+      <div class="row">
+        <div class="col-lg-12" align="center">
+          <header class="tm-site-header">
+            <h1 class="pl-4 tm-site-title">疲劳监测 + 打哈欠统计</h1>
+          </header>
         </div>
+      </div>
     </div>
 
     <div class="container tm-container-2">
-        <div class="row">
-            <div class="col-lg-12">
-                <br>
-                <h2 class="tm-welcome-text" align="center">A lot can happen in the blink of an eye. The average adult blinks between 10-20 times per minute. Even though it only takes one-tenth of a second, all those blinks add up to about 10 percent of our waking life!</h2>
-                <br>
-                <br>
-            </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <br />
+          <h2 class="tm-welcome-text" align="center">
+            眨眼、打哈欠与疲劳综合监测
+          </h2>
+          <br />
+          <br />
         </div>
+      </div>
 
-        <div class="row">
-            <div class="col-lg-12" align="center">
-                <div class="tm-video-container" align="center"> 
-                    <img src="{{ url_for('video_feed') }}" align="center"> 
-                </div>
-            </div>
+      <!-- 视频流 -->
+      <div class="row">
+        <div class="col-lg-12" align="center">
+          <div class="tm-video-container" align="center">
+            <img src="{{ url_for('video_feed') }}" align="center" />
+          </div>
         </div>
-            
-        <!--  row -->
-        <hr>
-        <div class="row tm-section-mb tm-section-mt">
-            <div class="col-lg-4 col-md-4 col-sm-12 pr-lg-5 mb-md-0 mb-4" align="center">
-                <h3 class="mt-2 mb-3 tm-text-gray">BLINKING NOURISHES & LUBRICATES OUR EYES</h3>
-                <p>We don't often pay attention to our blinking habits throughout the day. But whether we realize it or not, blinking is vitally important to our eye health. Making a conscious effort to blink more often during high focus activities can do our eyes a world of good.</p>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 pr-lg-5 mb-md-0 mb-4" align="center">
-                <h3 class="mt-2 mb-3 tm-text-gray">WHEN WE FOCUS, WE BLINK A LOT LESS</h3>
-                <p>On an average we only blink 3-8 times per minute when reading, watching TV, listening to a podcast, working on a computer, or another activity that requires intense focus. That’s roughly 60 percent less than our normal rate of blinking! </p>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12" align="center">
-                <h3 class="mt-2 mb-3 tm-text-gray">BLINKING CAN RELIEVE STRAIN & HELP DRY EYES</h3>
-                <p>Blinking is necessary to clean and moisturize our eyes. Each time we blink, a thin layer of tears is spread across the eye surface, keeping them from drying out as well as brushing away any small particles of dust or dirt that could otherwise irritate our eyes or impair our vision.</p>
-            </div>
+      </div>
+
+      <hr />
+
+      <!-- 统计文字区域 -->
+      <div class="row tm-section-mb tm-section-mt">
+        <div class="col-lg-4 col-md-4 col-sm-12 pr-lg-5 mb-md-0 mb-4" align="center">
+          <h3 class="mt-2 mb-3 tm-text-gray">眨眼次数 (累计)</h3>
+          <p>实时监测到的眨眼累计次数，将显示在视频上。</p>
         </div>
-            
-        <!-- Footer -->
-        <footer class="row mt-5 mb-5">
-            <div class="col-lg-12">
-                <p class="text-center tm-text-gray tm-copyright-text mb-0">Developed By : Anukriti Jain | <a href="https://github.com/Anukriti2512" class="tm-text-white">Github</a>
-                </p>
-            </div>
-        </footer>
+        <div class="col-lg-4 col-md-4 col-sm-12 pr-lg-5 mb-md-0 mb-4" align="center">
+          <h3 class="mt-2 mb-3 tm-text-gray">打哈欠次数 (累计)</h3>
+          <p>实时监测到的打哈欠累计次数，将显示在视频上。</p>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12" align="center">
+          <h3 class="mt-2 mb-3 tm-text-gray">疲劳状态</h3>
+          <p>当系统检测到疲劳时，会在视频上弹出“⚠️ 状态: 疲 劳”并发出提醒。</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="row mt-5 mb-5">
+        <div class="col-lg-12">
+          <p class="text-center tm-text-gray tm-copyright-text mb-0">
+            Developed By : Hongshen Lv | <a
+              href="806631998@qq.com"
+              class="tm-text-white"
+              >Github</a
+            >
+          </p>
+        </div>
+      </footer>
     </div>
   </body>
 </html>
