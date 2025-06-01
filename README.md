@@ -1,4 +1,4 @@
-# Fatigue-Detection（基于 YOLOv8 的眨眼 + 打哈欠疲劳监测）
+# Fatigue-Detection（基于 YOLOv8 的眨眼 + 打哈欠疲劳监测系统）
 
 ## 项目背景 
 
