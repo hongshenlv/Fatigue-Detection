@@ -64,7 +64,7 @@
 
 ### 1. 正常状态（STATUS: NORMAL）
 
-![正常情况](screenshots/normal.png)
+![正常情况](screenshots/normal0.png)
 
 图中显示正常情况下，状态为 “STATUS: NORMAL”。*
 
@@ -72,7 +72,7 @@
 
 ### 2. 打哈欠状态（Mouth: Yawning）
 
-![打哈欠情况](screenshots/yawn.png)
+![打哈欠情况](screenshots/yawn0.png)
 
 图中显示：检测到嘴部“Yawning”，Yawns 计数增加，由于没达到阈值，状态仍为 “STATUS: NORMAL”。*
 
@@ -80,7 +80,7 @@
 
 ### 3. 疲劳告警（WARNING: FATIGUE）
 
-![告警情况](screenshots/warning2.png)
+![告警情况](screenshots/warning0.png)
 
 当当前 60 秒窗口内 `window_blinks < BLINK_ALERT_THRESHOLD` 或 `window_yawns > YAWN_ALERT_THRESHOLD` 时，页面会闪烁并显示 “WARNING: FATIGUE”，同时触发系统通知（如图中右上角 macOS 通知示例）。*
 
